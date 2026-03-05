@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #if XASH_WIN32
 #include <io.h>
 #endif
+#include <whb/log.h>
 
 // do not waste precious CPU cycles on mobiles or low memory devices
 #if !XASH_WIN32 && !XASH_MOBILE_PLATFORM && !XASH_LOW_MEMORY && !XASH_EMSCRIPTEN
@@ -262,10 +263,16 @@ static void Sys_PrintStdout( const char *logtime, size_t logtime_len, const char
 	}
 #endif
 
+
 #elif !XASH_WIN32 // Wcon does the job
-	Sys_PrintLogfile( STDOUT_FILENO, logtime, logtime_len, msg, XASH_COLORIZE_CONSOLE );
-	Sys_FlushStdout();
+Sys_PrintLogfile( STDOUT_FILENO, logtime, logtime_len, msg, XASH_COLORIZE_CONSOLE );
+Sys_FlushStdout();
 #endif
+	static char buf[MAX_PRINT_MSG];
+
+	// strip color codes
+	COM_StripColors( msg, buf );
+	WHBLogPrintf("%s %s", logtime, buf);
 }
 
 void Sys_PrintLog( const char *pMsg )

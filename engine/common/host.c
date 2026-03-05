@@ -36,6 +36,8 @@ GNU General Public License for more details.
 #include "enginefeatures.h"
 #include "render_api.h"	// decallist_t
 #include "tests.h"
+#include <whb/log.h>
+#include <whb/log_cafe.h>
 
 host_parm_t host;	// host parms
 static jmp_buf return_from_main_buf;
@@ -61,7 +63,7 @@ void Host_ExitInMain( void )
 struct tests_stats_s tests_stats;
 #endif
 
-CVAR_DEFINE( host_developer, "developer", "0", FCVAR_FILTERABLE, "engine is in development-mode" );
+CVAR_DEFINE( host_developer, "developer", "2", FCVAR_FILTERABLE, "engine is in development-mode" );
 CVAR_DEFINE_AUTO( sys_timescale, "1.0", FCVAR_FILTERABLE, "scale frame time" );
 
 static CVAR_DEFINE_AUTO( sys_ticrate, "100", FCVAR_SERVER, "framerate in dedicated mode" );
@@ -1058,6 +1060,9 @@ static void Host_InitCommon( int argc, char **argv, const char *progname, qboole
 
 	host.allow_console = DEFAULT_ALLOWCONSOLE || DEFAULT_DEV > 0;
 
+	host.allow_console = true;
+	developer = DEV_EXTENDED;
+
 	if( Sys_CheckParm( "-dev" ))
 	{
 		host.allow_console = true;
@@ -1195,6 +1200,9 @@ int EXPORT Host_Main( int argc, char **argv, const char *progname, int bChangeGa
 
 	if( setjmp( return_from_main_buf ))
 		return error_on_exit;
+
+	WHBLogCafeInit();
+	WHBLogPrintf("==================== hello world!");
 
 	host.starttime = Platform_DoubleTime();
 

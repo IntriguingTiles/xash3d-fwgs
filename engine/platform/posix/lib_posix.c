@@ -24,6 +24,8 @@ GNU General Public License for more details.
 #elif XASH_PSVITA
 	#define VRTLD_LIBDL_COMPAT
 	#include <vrtld.h>
+#elif XASH_WIIU
+	#include "platform/wiiu/lib_wiiu.h"
 #else
 	#include <dlfcn.h>
 #endif

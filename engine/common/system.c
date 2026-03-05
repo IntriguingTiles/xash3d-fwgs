@@ -153,7 +153,7 @@ const char *Sys_GetCurrentUser( void )
 	sceAppUtilSystemParamGetString( SCE_SYSTEM_PARAM_ID_USERNAME, username, sizeof( username ) - 1 );
 	if( !COM_StringEmpty( username ))
 		return username;
-#elif XASH_POSIX && !XASH_ANDROID && !XASH_NSWITCH
+#elif XASH_POSIX && !XASH_ANDROID && !XASH_NSWITCH && !XASH_WIIU
 	static string username;
 	struct passwd *pw = getpwuid( geteuid( ));
 
@@ -532,7 +532,7 @@ Returns true if execv-like syscall is available
 */
 qboolean Sys_CanRestart( void )
 {
-#if XASH_NSWITCH || XASH_PSVITA
+#if XASH_NSWITCH || XASH_PSVITA || XASH_WIIU
 	return true;
 #else
 	int exelen = wai_getExecutablePath( NULL, 0, NULL );
@@ -633,7 +633,7 @@ qboolean Sys_NewInstance( const char *gamedir, const char *finalmsg )
 		wai_getExecutablePath( exe, exelen, NULL );
 		exe[exelen] = 0;
 
-		execv( exe, newargs );
+		// execv( exe, newargs );
 
 		// if execv returned, it's probably an error
 		printf( "execv failed: %s", strerror( errno ));

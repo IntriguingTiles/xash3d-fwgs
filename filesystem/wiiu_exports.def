@@ -1,0 +1,5 @@
+:NAME filesystem_stdio
+
+:TEXT
+CreateInterface
+GetFSAPI
