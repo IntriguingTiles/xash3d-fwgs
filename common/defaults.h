@@ -109,6 +109,8 @@ SETUP BACKENDS DEFINITIONS
 	#define XASH_LIB LIB_POSIX
 #endif
 
+#define XASH_ALLOW_SAVERESTORE_OFFSETS
+
 //
 // fallback to NULL
 //
@@ -150,8 +152,8 @@ Default build-depended cvar and constant values
 	#define DEFAULT_MODE_HEIGHT  544
 	#define DEFAULT_ALLOWCONSOLE 1
 #elif XASH_WIIU
-	#define DEFAULT_MODE_WIDTH   1280
-	#define DEFAULT_MODE_HEIGHT  720
+	#define DEFAULT_MODE_WIDTH   854
+	#define DEFAULT_MODE_HEIGHT  480
 	#define DEFAULT_ALLOWCONSOLE 1
 #elif XASH_ANDROID
 	#define DEFAULT_TOUCH_ENABLE "1"

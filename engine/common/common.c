@@ -794,7 +794,8 @@ COM_FreeFile
 */
 void GAME_EXPORT COM_FreeFile( void *buffer )
 {
-	free( buffer );
+	// TODO: we can't free memory allocated by an RPL in an RPX at this time
+	// free( buffer );
 }
 
 /*
