@@ -109,7 +109,7 @@ void GL_ApplyTextureParams( gl_texture_t *tex )
 	vec4_t	border = { 0.0f, 0.0f, 0.0f, 1.0f };
 	qboolean nomipmap;
 
-	if( !glw_state.initialized )
+	if( !ref_glw_state.initialized )
 		return;
 
 	Assert( tex != NULL );
@@ -1087,7 +1087,7 @@ static qboolean GL_UploadTexture( gl_texture_t *tex, rgbdata_t *pic )
 	const byte	*bufend;
 
 	// dedicated server
-	if( !glw_state.initialized )
+	if( !ref_glw_state.initialized )
 		return true;
 
 	Assert( pic != NULL );
@@ -1442,7 +1442,7 @@ static void GL_DeleteTexture( gl_texture_t *tex )
 	if( tex->original )
 		gEngfuncs.FS_FreeImage( tex->original );
 
-	if( glw_state.initialized )
+	if( ref_glw_state.initialized )
 		pglDeleteTextures( 1, &tex->texnum );
 	memset( tex, 0, sizeof( *tex ));
 }
@@ -1545,7 +1545,7 @@ int GL_LoadTextureArray( const char **names, int flags )
 	int		ret = 0;
 	uint		i, j;
 
-	if( !names || !names[0] || !glw_state.initialized )
+	if( !names || !names[0] || !ref_glw_state.initialized )
 		return 0;
 
 	// count layers (g-cont. this is pontentially unsafe loop)

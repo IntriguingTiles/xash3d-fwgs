@@ -263,7 +263,7 @@ GL_CleanupAllTextureUnits
 */
 void GL_CleanupAllTextureUnits( void )
 {
-	if( !glw_state.initialized ) return;
+	if( !ref_glw_state.initialized ) return;
 	// force to cleanup all the units
 	GL_SelectTexture( GL_MaxTextureUnits() - 1 );
 	GL_CleanUpTextureUnits( 0 );

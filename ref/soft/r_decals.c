@@ -101,6 +101,7 @@ static void R_DecalUnlink( decal_t *pdecal )
 // as each surface needs it's own.
 static decal_t *R_DecalAlloc( decal_t *pdecal )
 {
+#if 0
 	int limit = MAX_RENDER_DECALS;
 
 	if( r_decals->value < limit )
@@ -130,6 +131,7 @@ static decal_t *R_DecalAlloc( decal_t *pdecal )
 	R_DecalUnlink( pdecal );
 
 	return pdecal;
+#endif
 }
 
 // -----------------------------------------------------------------------------

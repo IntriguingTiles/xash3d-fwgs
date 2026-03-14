@@ -456,7 +456,7 @@ void CL_DrawTracers( double frametime, particle_t *cl_active_tracers );
 // gl_sprite.c
 //
 void R_SpriteInit( void );
-void Mod_LoadSpriteModel( model_t *mod, const void *buffer, qboolean *loaded, uint texFlags );
+void Ref_Mod_LoadSpriteModel( model_t *mod, const void *buffer, qboolean *loaded, uint texFlags );
 mspriteframe_t *R_GetSpriteFrame( const model_t *pModel, int frame, float yaw );
 void R_DrawSpriteModel( cl_entity_t *e );
 
@@ -480,7 +480,7 @@ void Mod_StudioUnloadTextures( void *data );
 //
 // gl_alias.c
 //
-void Mod_LoadAliasModel( model_t *mod, const void *buffer, qboolean *loaded );
+void Ref_Mod_LoadAliasModel( model_t *mod, const void *buffer, qboolean *loaded );
 void R_DrawAliasModel( cl_entity_t *e );
 void R_AliasInit( void );
 
@@ -502,8 +502,8 @@ qboolean R_UploadRipples( texture_t *image );
 //
 // renderer exports
 //
-qboolean R_Init( void );
-void R_Shutdown( void );
+qboolean Ref_R_Init( void );
+void Ref_R_Shutdown( void );
 void GL_SetupAttributes( int safegl );
 void GL_OnContextCreated( void );
 void GL_InitExtensions( void );
@@ -550,7 +550,7 @@ const char *GL_ErrorString( int err );
 //
 // gl_triapi.c
 //
-void TriRenderMode( int mode );
+void Ref_TriRenderMode( int mode );
 void TriBegin( int mode );
 void TriEnd( void );
 void TriTexCoord2f( float u, float v );
@@ -558,15 +558,15 @@ void TriVertex3fv( const float *v );
 void TriVertex3f( float x, float y, float z );
 void _TriColor4f( float r, float g, float b, float a );
 void _TriColor4ub( byte r, byte g, byte b, byte a );
-void TriColor4f( float r, float g, float b, float a );
-void TriColor4ub( byte r, byte g, byte b, byte a );
-void TriBrightness( float brightness );
-int TriWorldToScreen( const float *world, float *screen );
-int TriSpriteTexture( model_t *pSpriteModel, int frame );
+void Ref_TriColor4f( float r, float g, float b, float a );
+void Ref_TriColor4ub( byte r, byte g, byte b, byte a );
+void Ref_TriBrightness( float brightness );
+int Ref_TriWorldToScreen( const float *world, float *screen );
+int Ref_TriSpriteTexture( model_t *pSpriteModel, int frame );
 void TriFog( float flFogColor[3], float flStart, float flEnd, int bOn );
 void TriGetMatrix( const int pname, float *matrix );
 void TriFogParams( float flDensity, int iFogSkybox );
-void TriCullFace( TRICULLSTYLE mode );
+void Ref_TriCullFace( TRICULLSTYLE mode );
 
 /*
 =======================================================================
@@ -688,7 +688,7 @@ typedef struct
 extern glconfig_t		glConfig;
 extern glstate_t		glState;
 // move to engine
-extern glwstate_t		glw_state;
+extern glwstate_t		ref_glw_state;
 extern ref_api_t      gEngfuncs;
 extern ref_globals_t *gpGlobals;
 extern ref_client_t  *gp_cl;
@@ -810,6 +810,13 @@ extern convar_t r_dlight_virtual_radius;
 // engine shared convars
 //
 DECLARE_ENGINE_SHARED_CVAR_LIST()
+
+extern convar_t *gl_vsync;
+extern convar_t *host_allow_materials;
+extern convar_t *gl_clear;
+extern convar_t *r_showhull;
+extern convar_t *r_decals;
+extern convar_t *r_showtextures;
 
 //
 // engine callbacks

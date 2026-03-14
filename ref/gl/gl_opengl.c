@@ -47,7 +47,7 @@ poolhandle_t r_temppool;
 gl_globals_t	tr;
 glconfig_t	glConfig;
 glstate_t	glState;
-glwstate_t	glw_state;
+glwstate_t	ref_glw_state;
 
 #if XASH_GL_STATIC
 	#define GL_CALL( x ) #x, NULL
@@ -581,11 +581,11 @@ GL_GetProcAddress
 defined just for nanogl/glwes, so it don't link to SDL2 directly, nor use dlsym
 ==============
 */
-void GAME_EXPORT *GL_GetProcAddress( const char *name ); // keep defined for nanogl/wes
-void GAME_EXPORT *GL_GetProcAddress( const char *name )
-{
-	return gEngfuncs.GL_GetProcAddress( name );
-}
+// void GAME_EXPORT *GL_GetProcAddress( const char *name ); // keep defined for nanogl/wes
+// void GAME_EXPORT *GL_GetProcAddress( const char *name )
+// {
+// 	return gEngfuncs.GL_GetProcAddress( name );
+// }
 
 /*
 ===============
@@ -830,7 +830,7 @@ static void GL_InitExtensionsGLES( void )
 
 #endif
 		case GL_DEBUG_OUTPUT:
-			if( glw_state.extended )
+			if( ref_glw_state.extended )
 				GL_CheckExtension( "GL_KHR_debug", debugoutputfuncs, ARRAYSIZE( debugoutputfuncs ), "gl_debug_output", extid, 0 );
 			else
 				GL_SetExtension( extid, false );
@@ -990,7 +990,7 @@ static void GL_InitExtensionsBigGL( void )
 	}
 
 	// this won't work without extended context
-	if( glw_state.extended )
+	if( ref_glw_state.extended )
 		GL_CheckExtension( "GL_ARB_debug_output", debugoutputfuncs, ARRAYSIZE( debugoutputfuncs ), "gl_debug_output", GL_DEBUG_OUTPUT, 0 );
 
 #if XASH_PSVITA
@@ -1117,14 +1117,14 @@ void GL_InitExtensions( void )
 	R_RenderInfo( true );
 
 	tr.framecount = tr.visframecount = 1;
-	glw_state.initialized = true;
+	ref_glw_state.initialized = true;
 }
 
 void GL_ClearExtensions( void )
 {
 	// now all extensions are disabled
 	memset( glConfig.extension, 0, sizeof( glConfig.extension ));
-	glw_state.initialized = false;
+	ref_glw_state.initialized = false;
 #if XASH_PSVITA
 	// deinit our immediate mode override
 	VGL_ShimShutdown();
@@ -1135,10 +1135,10 @@ void GL_ClearExtensions( void )
 
 /*
 =================
-GL_InitCommands
+Ref_GL_InitCommands
 =================
 */
-static void GL_InitCommands( void )
+static void Ref_GL_InitCommands( void )
 {
 	RETRIEVE_ENGINE_SHARED_CVAR_LIST();
 
@@ -1243,12 +1243,12 @@ static void GL_RemoveCommands( void )
 R_Init
 ===============
 */
-qboolean R_Init( void )
+qboolean Ref_R_Init( void )
 {
-	if( glw_state.initialized )
+	if( ref_glw_state.initialized )
 		return true;
 
-	GL_InitCommands();
+	Ref_GL_InitCommands();
 	GL_InitRandomTable();
 
 	GL_SetDefaultState();
@@ -1295,9 +1295,9 @@ qboolean R_Init( void )
 R_Shutdown
 ===============
 */
-void R_Shutdown( void )
+void Ref_R_Shutdown( void )
 {
-	if( !glw_state.initialized )
+	if( !ref_glw_state.initialized )
 		return;
 
 	GL_RemoveCommands();
@@ -1409,7 +1409,7 @@ void GL_SetupAttributes( int safegl )
 		gEngfuncs.Con_Reportf( "Creating an extended GL context for debug...\n" );
 		SetBits( context_flags, FCONTEXT_DEBUG_ARB );
 		gEngfuncs.GL_SetAttribute( REF_GL_CONTEXT_FLAGS, REF_GL_CONTEXT_DEBUG_FLAG );
-		glw_state.extended = true;
+		ref_glw_state.extended = true;
 	}
 
 	if( safegl > SAFE_DONTCARE )

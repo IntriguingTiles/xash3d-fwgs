@@ -32,12 +32,12 @@ static struct
 */
 /*
 =============
-TriRenderMode
+Ref_TriRenderMode
 
 set rendermode
 =============
 */
-void TriRenderMode( int mode )
+void Ref_TriRenderMode( int mode )
 {
 	ds.renderMode = mode;
 	pglTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
@@ -149,11 +149,11 @@ void _TriColor4ub( byte r, byte g, byte b, byte a )
 
 /*
 =============
-TriColor4ub
+Ref_TriColor4ub
 
 =============
 */
-void TriColor4ub( byte r, byte g, byte b, byte a )
+void Ref_TriColor4ub( byte r, byte g, byte b, byte a )
 {
 	ds.triRGBA[0] = r * (1.0f / 255.0f);
 	ds.triRGBA[1] = g * (1.0f / 255.0f);
@@ -165,13 +165,13 @@ void TriColor4ub( byte r, byte g, byte b, byte a )
 
 /*
 =================
-TriColor4f
+Ref_TriColor4f
 =================
 */
-void TriColor4f( float r, float g, float b, float a )
+void Ref_TriColor4f( float r, float g, float b, float a )
 {
 	if( ds.renderMode == kRenderTransAlpha )
-		TriColor4ub( r * 255.9f, g * 255.9f, b * 255.9f, a * 255.0f );
+		Ref_TriColor4ub( r * 255.9f, g * 255.9f, b * 255.9f, a * 255.0f );
 	else _TriColor4f( r * a, g * a, b * a, 1.0 );
 
 	ds.triRGBA[0] = r;
@@ -215,12 +215,12 @@ void TriVertex3f( float x, float y, float z )
 
 /*
 =============
-TriWorldToScreen
+Ref_TriWorldToScreen
 
 convert world coordinates (x,y,z) into screen (x, y)
 =============
 */
-int TriWorldToScreen( const float *world, float *screen )
+int Ref_TriWorldToScreen( const float *world, float *screen )
 {
 	int	retval;
 
@@ -236,12 +236,12 @@ int TriWorldToScreen( const float *world, float *screen )
 
 /*
 =============
-TriSpriteTexture
+Ref_TriSpriteTexture
 
 bind current texture
 =============
 */
-int TriSpriteTexture( model_t *pSpriteModel, int frame )
+int Ref_TriSpriteTexture( model_t *pSpriteModel, int frame )
 {
 	int	gl_texturenum;
 
@@ -333,11 +333,11 @@ void TriFogParams( float flDensity, int iFogSkybox )
 
 /*
 =============
-TriCullFace
+Ref_TriCullFace
 
 =============
 */
-void TriCullFace( TRICULLSTYLE mode )
+void Ref_TriCullFace( TRICULLSTYLE mode )
 {
 	int glMode;
 
@@ -356,10 +356,10 @@ void TriCullFace( TRICULLSTYLE mode )
 
 /*
 =============
-TriBrightness
+Ref_TriBrightness
 =============
 */
-void TriBrightness( float brightness )
+void Ref_TriBrightness( float brightness )
 {
 	float	r, g, b;
 

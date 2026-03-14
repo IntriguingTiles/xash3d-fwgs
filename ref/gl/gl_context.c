@@ -27,15 +27,15 @@ ref_globals_t *gpGlobals;
 ref_client_t  *gp_cl;
 ref_host_t    *gp_host;
 
-void _Mem_Free( void *data, const char *filename, int fileline )
-{
-	gEngfuncs._Mem_Free( data, filename, fileline );
-}
+// void _Mem_Free( void *data, const char *filename, int fileline )
+// {
+// 	gEngfuncs._Mem_Free( data, filename, fileline );
+// }
 
-void *_Mem_Alloc( poolhandle_t poolptr, size_t size, qboolean clear, const char *filename, int fileline )
-{
-	return gEngfuncs._Mem_Alloc( poolptr, size, clear, filename, fileline );
-}
+// void *_Mem_Alloc( poolhandle_t poolptr, size_t size, qboolean clear, const char *filename, int fileline )
+// {
+// 	return gEngfuncs._Mem_Alloc( poolptr, size, clear, filename, fileline );
+// }
 
 static void R_ClearScreen( void )
 {
@@ -159,10 +159,10 @@ static qboolean Mod_ProcessRenderData( model_t *mod, qboolean create, const byte
 		loaded = true;
 		break;
 	case mod_sprite:
-		Mod_LoadSpriteModel( mod, buf, &loaded, mod->numtexinfo );
+		Ref_Mod_LoadSpriteModel( mod, buf, &loaded, mod->numtexinfo );
 		break;
 	case mod_alias:
-		Mod_LoadAliasModel( mod, buf, &loaded );
+		Ref_Mod_LoadAliasModel( mod, buf, &loaded );
 		break;
 	default:
 		gEngfuncs.Host_Error( "%s: unsupported type %d\n", __func__, mod->type );
@@ -429,8 +429,8 @@ static const char *R_GetConfigName( void )
 
 static const ref_interface_t gReffuncs =
 {
-	R_Init,
-	R_Shutdown,
+	Ref_R_Init,
+	Ref_R_Shutdown,
 	R_GetConfigName,
 	R_SetDisplayTransform,
 
@@ -546,7 +546,7 @@ static const ref_interface_t gReffuncs =
 	R_ClearScene,
 	R_GetProcAddress,
 
-	TriRenderMode,
+	Ref_TriRenderMode,
 	TriBegin,
 	TriEnd,
 	_TriColor4f,
@@ -558,7 +558,7 @@ static const ref_interface_t gReffuncs =
 	R_ScreenToWorld,
 	TriGetMatrix,
 	TriFogParams,
-	TriCullFace,
+	Ref_TriCullFace,
 
 	VGUI_SetupDrawing,
 	VGUI_UploadTextureBlock,

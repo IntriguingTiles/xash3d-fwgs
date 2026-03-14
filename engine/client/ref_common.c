@@ -468,7 +468,7 @@ static const ref_api_t gEngfuncs =
 
 static void R_UnloadProgs( void )
 {
-	if( !ref.hInstance ) return;
+	// if( !ref.hInstance ) return;
 
 	// deinitialize renderer
 	if (ref.dllFuncs.R_Shutdown)
@@ -479,7 +479,7 @@ static void R_UnloadProgs( void )
 	Cvar_Unlink( FCVAR_RENDERINFO | FCVAR_GLCONFIG | FCVAR_REFDLL );
 	Cmd_Unlink( CMD_REFDLL );
 
-	COM_FreeLibrary( ref.hInstance );
+	// COM_FreeLibrary( ref.hInstance );
 	ref.hInstance = NULL;
 
 	memset( &refState, 0, sizeof( refState ));
@@ -510,28 +510,30 @@ static void CL_FillTriAPIFromRef( triangleapi_t *dst, const ref_interface_t *src
 	dst->FogParams         = src->FogParams;
 }
 
+int EXPORT GetRefAPI( int version, ref_interface_t *funcs, ref_api_t *engfuncs, ref_globals_t *globals );
+
 static qboolean R_LoadProgs( const char *name )
 {
 	static ref_api_t gpEngfuncs;
-	REFAPI GetRefAPI; // single export
+	// REFAPI GetRefAPI; // single export
 
-	if( ref.hInstance ) R_UnloadProgs();
+	// if( ref.hInstance ) R_UnloadProgs();
 
-	FS_AllowDirectPaths( true );
-	if( !( ref.hInstance = COM_LoadLibrary( name, false, true )))
-	{
-		FS_AllowDirectPaths( false );
-		Con_Reportf( "%s: can't load renderer library %s: %s\n", __func__, name, COM_GetLibraryError() );
-		return false;
-	}
+	// FS_AllowDirectPaths( true );
+	// if( !( ref.hInstance = COM_LoadLibrary( name, false, true )))
+	// {
+	// 	FS_AllowDirectPaths( false );
+	// 	Con_Reportf( "%s: can't load renderer library %s: %s\n", __func__, name, COM_GetLibraryError() );
+	// 	return false;
+	// }
 
-	FS_AllowDirectPaths( false );
+	// FS_AllowDirectPaths( false );
 
-	if( !( GetRefAPI = (REFAPI)COM_GetProcAddress( ref.hInstance, GET_REF_API )))
-	{
-		Con_Reportf( "%s: can't find GetRefAPI entry point in %s\n", __func__, name );
-		return false;
-	}
+	// if( !( GetRefAPI = (REFAPI)COM_GetProcAddress( ref.hInstance, GET_REF_API )))
+	// {
+	// 	Con_Reportf( "%s: can't find GetRefAPI entry point in %s\n", __func__, name );
+	// 	return false;
+	// }
 
 	// make local copy of engfuncs to prevent overwrite it with user dll
 	gpEngfuncs = gEngfuncs;

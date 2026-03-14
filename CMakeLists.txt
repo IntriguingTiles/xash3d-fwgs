@@ -73,12 +73,13 @@ wut_add_exports(libref_soft ref/soft/wiiu_exports.def)
 wut_create_rpl(libref_soft)
 
 file(GLOB REF_GL_SOURCES ref/gl/* ref/gl/gl2_shim/*)
-add_executable(libref_gles3compat ${REF_GL_SOURCES} ${RPL_ENTRY_STUB})
+# add_executable(libref_gles3compat ${REF_GL_SOURCES} ${RPL_ENTRY_STUB})
+add_library(libref_gles3compat STATIC ${REF_GL_SOURCES})
 target_include_directories(libref_gles3compat PUBLIC pm_shared engine/common filesystem ref/gl)
 target_compile_definitions(libref_gles3compat PRIVATE -DREF_DLL=1 -DXASH_GLES3COMPAT=1)
 target_link_libraries(libref_gles3compat public GLESv2 ANGLE stdc++ z)
-wut_add_exports(libref_gles3compat ref/gl/wiiu_exports.def)
-wut_create_rpl(libref_gles3compat)
+# wut_add_exports(libref_gles3compat ref/gl/wiiu_exports.def)
+# wut_create_rpl(libref_gles3compat)
 
 # we cannot use mainui's CMakeLists.txt as it wants to create a shared library
 file(GLOB MENU_SOURCES
@@ -154,5 +155,5 @@ target_include_directories(xash PRIVATE
     pm_shared
     /opt/devkitpro/portlibs/wiiu/include/angle
 )
-target_link_libraries(xash Opus::opus public library_suffix build_vcs MultiEmulator ${DEPS_LIBRARIES} bz2 EGL GLESv2 ANGLE stdc++ z)
+target_link_libraries(xash Opus::opus public library_suffix build_vcs MultiEmulator ${DEPS_LIBRARIES} bz2 libref_gles3compat EGL GLESv2 ANGLE stdc++ z)
 wut_create_rpx(xash)
