@@ -116,7 +116,7 @@ void SDLash_Init( const char *basedir )
 	SDL_SetHint( SDL_HINT_ANDROID_BLOCK_ON_PAUSE, "0" );
 	SDL_SetHint( SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO, "0" );
 
-	if( SDL_Init( SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS ) )
+	if( SDL_Init( SDL_INIT_TIMER | /*SDL_INIT_VIDEO |*/ SDL_INIT_EVENTS ) )
 	{
 		Sys_Warn( "SDL_Init failed: %s", SDL_GetError() );
 		host.type = HOST_DEDICATED;

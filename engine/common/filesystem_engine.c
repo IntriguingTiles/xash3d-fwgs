@@ -314,6 +314,10 @@ static qboolean FS_DetermineReadOnlyRootDirectory( char *out, size_t size )
 {
 	const char *env_rodir = getenv( "XASH3D_RODIR" );
 
+	const char *dir = "fs:/vol/content";
+	Q_strncpy(out, dir, size);
+	return true;
+
 	if( _Sys_GetParmFromCmdLine( "-rodir", out, size ))
 		return true;
 

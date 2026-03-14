@@ -72,6 +72,14 @@ target_link_libraries(libref_soft public)
 wut_add_exports(libref_soft ref/soft/wiiu_exports.def)
 wut_create_rpl(libref_soft)
 
+file(GLOB REF_GL_SOURCES ref/gl/* ref/gl/gl2_shim/*)
+add_executable(libref_gles3compat ${REF_GL_SOURCES} ${RPL_ENTRY_STUB})
+target_include_directories(libref_gles3compat PUBLIC pm_shared engine/common filesystem ref/gl)
+target_compile_definitions(libref_gles3compat PRIVATE -DREF_DLL=1 -DXASH_GLES3COMPAT=1)
+target_link_libraries(libref_gles3compat public GLESv2 ANGLE stdc++ z)
+wut_add_exports(libref_gles3compat ref/gl/wiiu_exports.def)
+wut_create_rpl(libref_gles3compat)
+
 # we cannot use mainui's CMakeLists.txt as it wants to create a shared library
 file(GLOB MENU_SOURCES
     3rdparty/mainui/*
@@ -114,6 +122,7 @@ file(GLOB ENGINE_SOURCES
     engine/client/soundlib/libmpg/*
     engine/client/vgui/*
 )
+list(REMOVE_ITEM ENGINE_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/engine/platform/sdl2/vid_sdl2.c)
 add_executable(xash ${ENGINE_SOURCES} engine/common/http/net_http_xash.c )
 target_compile_definitions(xash PRIVATE
     -DXASH_GAMEDIR="valve"
@@ -127,6 +136,7 @@ target_compile_definitions(xash PRIVATE
     -DHAVE_SDL2=1
     -DENGINE_DLL=1
     -DXASH_REF_SOFT_ENABLED=1
+    -DXASH_REF_GLES3COMPAT_ENABLED=1
     -DXASH_ENABLE_MAIN=1
     -DXASH_SDL=2
 )
@@ -142,6 +152,7 @@ target_include_directories(xash PRIVATE
     engine/platform
     filesystem
     pm_shared
+    /opt/devkitpro/portlibs/wiiu/include/angle
 )
-target_link_libraries(xash Opus::opus public library_suffix build_vcs MultiEmulator ${DEPS_LIBRARIES} bz2)
+target_link_libraries(xash Opus::opus public library_suffix build_vcs MultiEmulator ${DEPS_LIBRARIES} bz2 EGL GLESv2 ANGLE stdc++ z)
 wut_create_rpx(xash)
