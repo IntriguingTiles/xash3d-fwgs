@@ -10,7 +10,8 @@ file(GENERATE
     OUTPUT ${RPL_ENTRY_STUB}
     CONTENT
 "#include <coreinit/dynload.h>
-int rpl_entry(OSDynLoad_Module module, OSDynLoad_EntryReason reason){return 0;}")
+int rpl_entry(OSDynLoad_Module module, OSDynLoad_EntryReason reason){return 0;}
+struct _reent *__wut_getreent(void){return _GLOBAL_REENT;}")
 
 # include_directories(
 #     3rdparty/library_suffix/include
