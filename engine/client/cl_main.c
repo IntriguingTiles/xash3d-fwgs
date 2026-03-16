@@ -3688,7 +3688,7 @@ void CL_Init( void )
 	if( !CL_LoadProgs( libpath ))
 		Host_Error( "can't initialize %s: %s\n", libpath, COM_GetLibraryError( ));
 
-	ID_Init();
+	//ID_Init();
 	SteamBroker_Init();
 
 	cls.build_num = 0;
