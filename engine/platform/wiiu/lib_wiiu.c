@@ -23,9 +23,9 @@ static OSDynLoad_Error g_last_dynload_error = 0;
 void *dlsym( void *handle, const char *symbol )
 {
     void* addr = NULL;
-    Con_Printf("Looking for symbol: %s\n", symbol);
 	g_last_dynload_error = OSDynLoad_FindExport(handle, OS_DYNLOAD_EXPORT_FUNC, symbol, &addr);
-    Con_Printf("success? 0x%X, addr: 0x%X\n", g_last_dynload_error, addr);
+    if (g_last_dynload_error != OS_DYNLOAD_OK)
+        Con_Printf("Failed to find symbol: %s, ret 0x%X\n", symbol, g_last_dynload_error);
 	return addr;
 }
 
