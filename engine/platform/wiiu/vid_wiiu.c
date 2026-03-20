@@ -60,7 +60,13 @@ qboolean R_Init_Video( ref_graphic_apis_t type )
         return false;  
     }
 
-    egl_surface = eglCreateWindowSurface(egl_display, egl_conf, (EGLNativeWindowType)NULL, NULL);
+    static const EGLint window_surface_attribs[] = {
+        EGL_WIDTH, 1280,
+        EGL_HEIGHT, 720,
+        EGL_NONE
+    };
+
+    egl_surface = eglCreateWindowSurface(egl_display, egl_conf, (EGLNativeWindowType)NULL, window_surface_attribs);
     if (egl_surface == EGL_NO_SURFACE) {
         Con_Printf("Can't create window surface\n");
         return false;
