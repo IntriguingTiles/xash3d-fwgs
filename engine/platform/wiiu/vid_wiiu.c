@@ -89,8 +89,6 @@ qboolean R_Init_Video( ref_graphic_apis_t type )
         Con_Printf("Made current failed\n");
     }
 
-    eglSwapInterval(egl_display, 2);
-
     // we should be able to more or less implement this
     ref.dllFuncs.GL_SetupAttributes( glw_state.safe );
     
@@ -175,7 +173,13 @@ qboolean SW_CreateBuffer( int width, int height, uint *stride, uint *bpp, uint *
 
 void GL_UpdateSwapInterval( void )
 {
-    STUB
+    if( FBitSet( gl_vsync.flags, FCVAR_CHANGED ))
+	{
+		ClearBits( gl_vsync.flags, FCVAR_CHANGED );
+
+		if( eglSwapInterval( egl_display, gl_vsync.value ) < 0 )
+			Con_Reportf( S_ERROR  "eglSwapInterval: %d\n", eglGetError( ));
+	}
 }
 
 rserr_t   R_ChangeDisplaySettings( int width, int height, window_mode_t window_mode ){
