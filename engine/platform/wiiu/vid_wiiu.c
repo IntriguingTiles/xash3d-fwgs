@@ -7,7 +7,7 @@
 #include <EGL/egl.h>
 #include <whb/proc.h>
 
-#define STUB Con_Printf("TODO: %s, (%s:%d)", __func__, __FILE_NAME__, __LINE__);
+#define STUB Con_Printf("TODO: %s, (%s:%d)\n", __func__, __FILE_NAME__, __LINE__);
 
 static EGLDisplay egl_display;
 static EGLSurface egl_surface;
